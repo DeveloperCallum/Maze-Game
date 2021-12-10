@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+//Responsible for generating the maze
 public class PrimsGeneration {
     private final SquareGrid gridController;
     private int x;
