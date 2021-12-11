@@ -3,30 +3,34 @@ package sample.maze;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import sample.grid.CELL_TYPE;
 import sample.grid.Cell;
 import sample.grid.SquareGrid;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 //Responsible for generating the maze
-public class PrimsGeneration {
-    private final SquareGrid gridController;
+public class PrimsGeneration implements MazeAlgorithm{
+    private final SquareGrid squareGrid;
     private int x;
     private int y;
-    private List<Cell> paths = new LinkedList<>();
+    private Group root;
 
     private Cell finalCell = null;
 
-    public PrimsGeneration(SquareGrid squareGrid, int x, int y) {
-        this.gridController = squareGrid;
+    public PrimsGeneration(Group root, double size, int x, int y) {
+        this.squareGrid = new SquareGrid(size, 41);
         this.x = x;
         this.y = y;
+        this.root = root;
+
+        squareGrid.generateGrid();
+        maxIterations = SquareGrid.getSize() * SquareGrid.getSize();
     }
 
-    public void generateMaze(Group root) {
-        for (List<Cell> column : gridController.getGrid()) {
+    public void generateMaze() {
+        for (List<Cell> column : squareGrid.getGrid()) {
             Group columnGroup = new Group();
             for (Cell square : column) {
                 columnGroup.getChildren().add(square);
@@ -37,9 +41,6 @@ public class PrimsGeneration {
 
         //Get the start square
         Cell start = SquareGrid.getSquare(x, y);
-
-        //Add the start square to the path
-        paths.add(start);
 
         assert start != null;
 
@@ -58,12 +59,12 @@ public class PrimsGeneration {
         System.out.println("Generation Completed");
     }
 
-    int maxIterations = SquareGrid.getSize() * SquareGrid.getSize();
+    int maxIterations;
     public void process(List<Cell> frontiers, int itr) {
         if (frontiers.isEmpty()) {
             return;
         }
-        
+
         if (itr > maxIterations){
             return;
         }
@@ -80,8 +81,6 @@ public class PrimsGeneration {
             Platform.runLater(() -> {
                 chosenFrontier.setFill(Color.RED);
             });
-
-            paths.add(chosenFrontier);
 
             List<Cell> paths = chosenFrontier.getPaths();
 

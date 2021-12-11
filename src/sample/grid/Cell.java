@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import sample.maze.CELL_TYPE;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -19,7 +19,7 @@ public class SquareGrid {
         this.amount = amount;
     }
 
-    public void GenerateGrid() {
+    public void generateGrid() {
         double recSize = size / amount;
 
         if (recSize % 1 != 0){
