@@ -26,7 +26,7 @@ public class PrimsGeneration implements MazeAlgorithm{
         this.root = root;
 
         squareGrid.generateGrid();
-        maxIterations = SquareGrid.getSize() * SquareGrid.getSize();
+        maxIterations = squareGrid.getSize() * squareGrid.getSize();
     }
 
     public void generateMaze() {
@@ -40,7 +40,7 @@ public class PrimsGeneration implements MazeAlgorithm{
         }
 
         //Get the start square
-        Cell start = SquareGrid.getSquare(x, y);
+        Cell start = squareGrid.getSquare(x, y);
 
         assert start != null;
 
@@ -50,7 +50,7 @@ public class PrimsGeneration implements MazeAlgorithm{
             start.setFill(Color.GREEN);
         });
 
-        process(start.getFrontiers(), 0);
+        process(squareGrid.getFrontiers(start), 0);
 
         Platform.runLater(() -> {
             finalCell.setFill(Color.YELLOW);
@@ -82,7 +82,7 @@ public class PrimsGeneration implements MazeAlgorithm{
                 chosenFrontier.setFill(Color.RED);
             });
 
-            List<Cell> paths = chosenFrontier.getPaths();
+            List<Cell> paths = squareGrid.getPaths(chosenFrontier);
 
             if (paths.isEmpty()) {
                 chosenFrontier.setFill(Color.WHITE);
@@ -100,19 +100,19 @@ public class PrimsGeneration implements MazeAlgorithm{
             Cell inbetween = null;
 
             if (pX < fX && pY == fY) {
-                inbetween = chosenPath.getSouth();
+                inbetween = squareGrid.getSouth(chosenPath);
             }
 
             if (pX == fX && pY < fY) {
-                inbetween = chosenPath.getEast();
+                inbetween = squareGrid.getEast(chosenPath);
             }
 
             if (pX == fX && pY > fY) {
-                inbetween = chosenPath.getWest();
+                inbetween = squareGrid.getWest(chosenPath);
             }
 
             if (pX > fX && pY == fY) {
-                inbetween = chosenPath.getNorth();
+                inbetween = squareGrid.getNorth(chosenPath);
             }
 
             if (inbetween != null) {
@@ -120,7 +120,7 @@ public class PrimsGeneration implements MazeAlgorithm{
                 paths.add(inbetween);
                 paths.add(chosenPath);
 
-                List<Cell> chosenPathFrontiers = chosenFrontier.getFrontiers();
+                List<Cell> chosenPathFrontiers = squareGrid.getFrontiers(chosenFrontier);
 
                 if (!chosenPathFrontiers.isEmpty()) {
                     frontiers.remove(chosenFrontier);

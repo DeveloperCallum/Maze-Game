@@ -3,9 +3,9 @@ package sample.grid;
 import java.util.*;
 
 public class SquareGrid {
-    private static double size;
-    private static int amount;
-    protected static Cell[][] grid;
+    private final double size;
+    private final int amount;
+    protected Cell[][] grid;
 
     /**
      * Create the grid used for a maze.
@@ -60,15 +60,106 @@ public class SquareGrid {
         return gridData;
     }
 
-    public static Cell getSquare(int x, int y){
+    public List<Cell> getFrontiers(Cell origin) {
+        List<Cell> cells = new LinkedList<>();
+        Cell back = getSquare(origin.getRowNum() - 2, origin.getSquareNum());
+
+        if (back != null && back.getState() == CELL_TYPE.CELL_BLOCKED) {
+            cells.add(back);
+        }
+
+        Cell front = getSquare(origin.getRowNum() + 2, origin.getSquareNum());
+
+        if (front != null && front.getState() == CELL_TYPE.CELL_BLOCKED) {
+            cells.add(front);
+        }
+
+        Cell right = getSquare(origin.getRowNum(), origin.getSquareNum() + 2);
+
+        if (right != null && right.getState() == CELL_TYPE.CELL_BLOCKED) {
+            cells.add(right);
+        }
+
+        Cell left = getSquare(origin.getRowNum(), origin.getSquareNum() - 2);
+
+        if (left != null && left.getState() == CELL_TYPE.CELL_BLOCKED) {
+            cells.add(left);
+        }
+
+        return cells;
+    }
+
+    public List<Cell> getPaths(Cell origin) {
+        List<Cell> cells = new LinkedList<>();
+
+        Cell back = getSquare(origin.getRowNum() - 2, origin.getSquareNum());
+
+        if (back != null && back.getState() == CELL_TYPE.CELL_PASSAGE) {
+            cells.add(back);
+        }
+
+        Cell front = getSquare(origin.getRowNum() + 2, origin.getSquareNum());
+
+        if (front != null && front.getState() == CELL_TYPE.CELL_PASSAGE) {
+            cells.add(front);
+        }
+
+        Cell right = getSquare(origin.getRowNum(), origin.getSquareNum() + 2);
+
+        if (right != null && right.getState() == CELL_TYPE.CELL_PASSAGE) {
+            cells.add(right);
+        }
+
+        Cell left = getSquare(origin.getRowNum(), origin.getSquareNum() - 2);
+
+        if (left != null && left.getState() == CELL_TYPE.CELL_PASSAGE) {
+            cells.add(left);
+        }
+
+        return cells;
+    }
+
+    public Cell getNorth(Cell origin) {
+        return getSquare(origin.getRowNum() - 1, origin.getSquareNum());
+    }
+
+    public Cell getNorthEast(Cell origin) {
+        return getSquare(origin.getRowNum() - 1, origin.getSquareNum() + 1);
+    }
+
+    public Cell getEast(Cell origin) {
+        return getSquare(origin.getRowNum(), origin.getSquareNum() + 1);
+    }
+
+    public Cell getSouthEast(Cell origin) {
+        return getSquare(origin.getRowNum() + 1, origin.getSquareNum() + 1);
+    }
+
+    public Cell getSouth(Cell origin) {
+        return getSquare(origin.getRowNum() + 1, origin.getSquareNum());
+    }
+
+    public Cell getSouthWest(Cell origin) {
+        return getSquare(origin.getRowNum() + 1, origin.getSquareNum() - 1);
+    }
+
+    public Cell getWest(Cell origin) {
+        return getSquare(origin.getRowNum(), origin.getSquareNum() - 1);
+    }
+
+    public Cell getNorthWest(Cell origin) {
+        return getSquare(origin.getRowNum() - 1, origin.getSquareNum() - 1);
+    }
+
+    public Cell getSquare(int x, int y){
         if (x < 0 || y < 0 || x >= grid.length || y >= grid.length ){
             return null;
         }
 
-        return SquareGrid.grid[x][y];
+        return grid[x][y];
     }
 
-    public static int getSize() {
+    public int getSize() {
         return grid.length;
     }
 }
