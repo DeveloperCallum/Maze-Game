@@ -1,4 +1,4 @@
-package sample.maze;
+package sample.grid;
 
 public enum  CELL_TYPE {
     CELL_PASSAGE,

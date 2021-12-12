@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import sample.grid.SquareGrid;
+import sample.maze.MazeGenerator;
 import sample.maze.PrimsGeneration;
 
 public class Main extends Application {
@@ -15,13 +16,13 @@ public class Main extends Application {
     public void start(Stage stage) {
         System.out.println("Started");
 
-        SquareGrid gridController = new SquareGrid(size, 41);
-        gridController.GenerateGrid();
         Group root = new Group();
 
+        MazeGenerator.setMazeAlgorithm(new PrimsGeneration(root, size,0, 0));
+
+        //Create a new thread so that they can process asynchronously.
         new Thread(() -> {
-            PrimsGeneration mazeProvider = new PrimsGeneration(gridController, 0, 0);
-            mazeProvider.generateMaze(root);
+            MazeGenerator.getGenerator().generateMaze();
         }).start();
 
         //Creating a scene object
