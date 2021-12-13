@@ -12,12 +12,12 @@ public class MazeGenerator {
     }
 
     public static void setMazeAlgorithm(MazeAlgorithm mazeAlgorithm) {
-        if (MazeGenerator.mazeAlgorithm != null) {
-            throw new RuntimeException("Maze Algorithm already set");
-        }
-
         synchronized (MazeGenerator.class) {
-            MazeGenerator.mazeAlgorithm = mazeAlgorithm;
+            if (MazeGenerator.mazeAlgorithm != null) {
+                throw new RuntimeException("Maze Algorithm already set");
+            }
+
+                MazeGenerator.mazeAlgorithm = mazeAlgorithm;
         }
     }
 }
